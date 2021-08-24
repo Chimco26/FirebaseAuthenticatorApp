@@ -1,10 +1,11 @@
-package com.example.firebaseauthenticatorapp;
+package com.example.firebaseauthenticatorapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.firebaseauthenticatorapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;

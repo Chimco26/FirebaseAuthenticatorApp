@@ -1,4 +1,4 @@
-package com.example.firebaseauthenticatorapp;
+package com.example.firebaseauthenticatorapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,14 +12,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.firebaseauthenticatorapp.R;
 import com.example.firebaseauthenticatorapp.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class Register extends AppCompatActivity {
 

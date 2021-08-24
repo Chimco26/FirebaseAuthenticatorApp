@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Hello">
+    tools:context=".activities.Hello">
 
     <TextView
         android:id="@+id/hello_uid"
@@ -34,9 +34,13 @@
         android:id="@+id/recyclerView"
         android:layout_width="411dp"
         android:layout_height="589dp"
-        tools:layout_editor_absoluteX="-1dp"
-        tools:layout_editor_absoluteY="141dp"
-        tools:ignore="MissingConstraints" />
+        android:layout_marginTop="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/hello_uid"
+        app:layout_constraintVertical_bias="0.75" />
 
     <EditText
         android:id="@+id/editTextTextPersonName"
@@ -47,10 +51,19 @@
         android:hint="Choose your contact"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
-        app:layout_constraintEnd_toStartOf="@+id/floatingActionButton2"
+        app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintHorizontal_bias="0.328"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="search"
+        tools:layout_editor_absoluteX="316dp"
+        tools:layout_editor_absoluteY="91dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -59,17 +72,5 @@
         android:clickable="true"
         app:srcCompat="@android:drawable/ic_menu_add"
         tools:layout_editor_absoluteX="330dp"
-        tools:layout_editor_absoluteY="614dp"
-        tools:ignore="MissingConstraints" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:backgroundTint="#00FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_search"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="89dp" />
+        tools:layout_editor_absoluteY="614dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
