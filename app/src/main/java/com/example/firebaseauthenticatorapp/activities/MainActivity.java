@@ -36,6 +36,6 @@ public class MainActivity extends AppCompatActivity {
     }
     private void saveToRealtimeDB(){
         DatabaseReference myRef = realtimeDB.getReference("message1");
-        myRef.setValue("hello word1!");
+        myRef.push().setValue("hello word1!");
     }
 }
