@@ -2,6 +2,7 @@ package com.example.firebaseauthenticatorapp.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,11 @@ import com.example.firebaseauthenticatorapp.R;
 import com.example.firebaseauthenticatorapp.models.Discussion;
 import com.example.firebaseauthenticatorapp.views.discussion.DiscussionAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +33,7 @@ import java.util.List;
  */
 public class DiscussionsFragment extends Fragment {
 
+    private FirebaseDatabase realtimeDB;
     private RecyclerView mRecyclerDiscussion;
     private SearchView mSearchViewOneDiscussiuon;
     private FloatingActionButton mFloatingActionButtonDiscussion;
@@ -80,6 +87,7 @@ public class DiscussionsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_discussion, container, false);
 
+        realtimeDB = FirebaseDatabase.getInstance();
         mRecyclerDiscussion = v.findViewById(R.id.recyclerView_discussions);
         mSearchViewOneDiscussiuon = v.findViewById(R.id.searchView_one_discussion);
         mFloatingActionButtonDiscussion = v.findViewById(R.id.floatingActionButton_new_discussion);
@@ -96,6 +104,20 @@ public class DiscussionsFragment extends Fragment {
     }
 
     private void getAllDiscussions(){
+        DatabaseReference myRef = realtimeDB.getReference("discussions");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dsp : snapshot.getChildren()){
+                    discussionList.add(dsp.getValue(Discussion.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 

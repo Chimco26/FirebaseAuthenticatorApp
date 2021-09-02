@@ -104,7 +104,7 @@ public class MessageFragment extends Fragment {
     }
 
     private void getAllMessage(){
-        DatabaseReference myRef = realtimeDB.getReference("discussions/ +")
+        DatabaseReference myRef = realtimeDB.getReference("discussions/ + ...");
 
     }
 
@@ -115,7 +115,7 @@ public class MessageFragment extends Fragment {
         String senderID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Message message = new Message(senderID, dateMessage, textMessage);
         messageList.add(message);
-        DatabaseReference myRef = realtimeDB.getReference("discussions/" + );
+        DatabaseReference myRef = realtimeDB.getReference("discussions/ + ..." );
         myRef.setValue(message);
     }
 }
