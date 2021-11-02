@@ -15,8 +15,10 @@ import android.widget.TextView;
 
 import com.example.firebaseauthenticatorapp.R;
 import com.example.firebaseauthenticatorapp.models.Discussion;
+import com.example.firebaseauthenticatorapp.models.LittleDiscussion;
 import com.example.firebaseauthenticatorapp.views.discussion.DiscussionAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,11 +28,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DiscussionsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DiscussionsFragment extends Fragment {
 
     private FirebaseDatabase realtimeDB;
@@ -38,7 +35,7 @@ public class DiscussionsFragment extends Fragment {
     private SearchView mSearchViewOneDiscussiuon;
     private FloatingActionButton mFloatingActionButtonDiscussion;
     private TextView mTitleTextView;
-    private List<Discussion> discussionList;
+    private List<LittleDiscussion> discussionList;
     private DiscussionAdapter adapter;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -54,15 +51,6 @@ public class DiscussionsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DiscussionFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static DiscussionsFragment newInstance(String param1, String param2) {
         DiscussionsFragment fragment = new DiscussionsFragment();
         Bundle args = new Bundle();
@@ -92,11 +80,12 @@ public class DiscussionsFragment extends Fragment {
         mSearchViewOneDiscussiuon = v.findViewById(R.id.searchView_one_discussion);
         mFloatingActionButtonDiscussion = v.findViewById(R.id.floatingActionButton_new_discussion);
         mTitleTextView = v.findViewById(R.id.textView_title_discussions);
+        getAllDiscussions();
         return v;
     }
 
-    private  void configureRecyclerView() {
-        discussionList = new ArrayList<>();
+    private  void configureRecyclerView(List<LittleDiscussion> list) {
+        discussionList = list;
         adapter = new DiscussionAdapter(discussionList);
         mRecyclerDiscussion.setAdapter(adapter);
         mRecyclerDiscussion.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -104,13 +93,21 @@ public class DiscussionsFragment extends Fragment {
     }
 
     private void getAllDiscussions(){
-        DatabaseReference myRef = realtimeDB.getReference("discussions");
+        DatabaseReference myRef = realtimeDB
+                .getReference("littleChat");
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dsp : snapshot.getChildren()){
-                    discussionList.add(dsp.getValue(Discussion.class));
+                    LittleDiscussion discussion = dsp.getValue(LittleDiscussion.class);
+                    if(discussion.getmListUsers().get(0).getUserUid()
+                            == FirebaseAuth.getInstance().getCurrentUser().getUid()
+                            || discussion.getmListUsers().get(1).getUserUid()
+                            == FirebaseAuth.getInstance().getCurrentUser().getUid()){
+                        discussionList.add(discussion);
+                    }
                 }
+                configureRecyclerView(discussionList);
             }
 
             @Override

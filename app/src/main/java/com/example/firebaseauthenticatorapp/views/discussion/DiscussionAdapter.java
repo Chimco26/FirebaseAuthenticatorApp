@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firebaseauthenticatorapp.R;
 import com.example.firebaseauthenticatorapp.models.Discussion;
+import com.example.firebaseauthenticatorapp.models.LittleDiscussion;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionViewHolder
 
     private List<Discussion> discussionList;
 
-    public DiscussionAdapter(List<Discussion> discussionList) {
+    public DiscussionAdapter(List<LittleDiscussion> discussionList) {
         this.discussionList = discussionList;
     }
 

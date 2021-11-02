@@ -30,7 +30,6 @@ public class Register extends AppCompatActivity {
     private ProgressBar progressBar;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
-    private DatabaseReference mRealtimeDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,6 @@ public class Register extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar_register);
         firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        mRealtimeDatabase = FirebaseDatabase.getInstance().getReference();
 
         mRegisterButton.setOnClickListener(v -> {
             progressBar.setVisibility(View.VISIBLE);
@@ -59,25 +57,11 @@ public class Register extends AppCompatActivity {
 
     }
 
-//    private  void saveToRealtimeDB(){
-//        Map<String, Object> user = new HashMap<>();
-//        user.put("full_name", mEditFullName.getText().toString());
-//        user.put("email", mEditEmail.getText().toString());
-//        user.put("phone", mEditPhone.getText().toString());
-//
-//        mRealtimeDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
-//    }
-
-    private void saveToFirebasDB() {
+    private void saveToFirebaseDB() {
         User user = new User(mEditFullName.getText().toString(),
                 mEditEmail.getText().toString(),
                 mEditPhone.getText().toString(),
                 FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-//        Map<String, Object> user = new HashMap<>();
-//        user.put("full_name", mEditFullName.getText().toString());
-//        user.put("email", mEditEmail.getText().toString());
-//        user.put("phone", mEditPhone.getText().toString());
 
         db.collection("Users")
                 .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -94,7 +78,7 @@ public class Register extends AppCompatActivity {
             if(task.isSuccessful()){
                 Intent intent = new Intent(getApplicationContext(), Hello.class);
                 startActivity(intent.putExtra("userUid", FirebaseAuth.getInstance().getCurrentUser().getUid()));
-                saveToFirebasDB();
+                saveToFirebaseDB();
 //                saveToRealtimeDB();
             } else {
                 Toast.makeText(this, task.getException().getMessage(), Toast.LENGTH_LONG).show();

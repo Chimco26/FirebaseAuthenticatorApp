@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.example.firebaseauthenticatorapp.R;
 import com.example.firebaseauthenticatorapp.models.Message;
-import com.example.firebaseauthenticatorapp.views.discussion.DiscussionAdapter;
 import com.example.firebaseauthenticatorapp.views.message.MessageAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,10 +27,10 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MessageFragment#newInstance} factory method to
+ * Use the {@link OneDiscussionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MessageFragment extends Fragment {
+public class OneDiscussionFragment extends Fragment {
 
     private FirebaseDatabase realtimeDB;
     private RecyclerView mRecyclerMessage;
@@ -50,7 +49,7 @@ public class MessageFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public MessageFragment() {
+    public OneDiscussionFragment() {
         // Required empty public constructor
     }
 
@@ -63,8 +62,8 @@ public class MessageFragment extends Fragment {
      * @return A new instance of fragment OneDiscussionFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MessageFragment newInstance(String param1, String param2) {
-        MessageFragment fragment = new MessageFragment();
+    public static OneDiscussionFragment newInstance(String param1, String param2) {
+        OneDiscussionFragment fragment = new OneDiscussionFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -85,7 +84,7 @@ public class MessageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.message_fragment, container, false);
+        View view = inflater.inflate(R.layout.one_discussion_fragment, container, false);
 
         realtimeDB = FirebaseDatabase.getInstance();
         mMyEditTextMessage = view.findViewById(R.id.editText_my_message);
