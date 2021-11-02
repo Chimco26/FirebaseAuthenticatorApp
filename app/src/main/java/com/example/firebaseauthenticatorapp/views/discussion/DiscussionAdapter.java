@@ -16,7 +16,7 @@ import java.util.List;
 
 public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionViewHolder> {
 
-    private List<Discussion> discussionList;
+    private List<LittleDiscussion> discussionList;
 
     public DiscussionAdapter(List<LittleDiscussion> discussionList) {
         this.discussionList = discussionList;

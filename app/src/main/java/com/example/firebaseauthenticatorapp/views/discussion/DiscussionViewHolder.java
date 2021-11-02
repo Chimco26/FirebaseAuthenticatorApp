@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firebaseauthenticatorapp.R;
 import com.example.firebaseauthenticatorapp.models.Discussion;
+import com.example.firebaseauthenticatorapp.models.LittleDiscussion;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 public class DiscussionViewHolder extends RecyclerView.ViewHolder {
@@ -28,13 +30,12 @@ public class DiscussionViewHolder extends RecyclerView.ViewHolder {
         picasso = Picasso.with(itemView.getContext());
     }
 
-    public void updateItemWithDiscussion(Discussion discussion){
-        mNameDiscussion.setText(discussion.getTitleDiscussion());
-        mTimeDiscussion.setText(discussion.getLastMessageDate().toString());
+    public void updateItemWithDiscussion(LittleDiscussion discussion){
+        if(discussion.getmListUsers().get(0).getUserUid() == FirebaseAuth.getInstance().getCurrentUser().getUid()){
+            mNameDiscussion.setText(discussion.getmListUsers().get(1).getFullName());
+            mTimeDiscussion.setText(discussion.getmLastMessage().getDateMessage().toString());
+        }
         mIconDiscussion.getImageMatrix();
-        mTextDiscussion.setText(discussion
-                .getMyDiscussion()
-                .get(discussion.getMyDiscussion().size())
-                .getTextMessage());
+        mTextDiscussion.setText(discussion.getmLastMessage().getTextMessage());
     }
 }
