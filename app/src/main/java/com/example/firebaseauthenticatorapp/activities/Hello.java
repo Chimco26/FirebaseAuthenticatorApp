@@ -2,6 +2,7 @@ package com.example.firebaseauthenticatorapp.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -53,7 +54,7 @@ public class Hello extends AppCompatActivity {
         mUserUid = bundle.getString("userUid");
         Log.e("TAG", ""+ mUserUid);
 
-        initRecyclerView();
+        initListUsers();
 
         DocumentReference docRef = db.collection("Users").document(mUserUid);
 
@@ -77,6 +78,7 @@ public class Hello extends AppCompatActivity {
                 for(QueryDocumentSnapshot doc : task.getResult()){
                     mListUsers.add(doc.toObject(Users.class));
                 }
+                initRecyclerView();
             }
             for(Users user : mListUsers){
                 Log.e("TAG", user.getFullName());
@@ -85,7 +87,7 @@ public class Hello extends AppCompatActivity {
     }
 
     public void initRecyclerView(){
-        initListUsers();
         mListUsersRecycler.setAdapter(new UsersAdapter(mListUsers));
+        mListUsersRecycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 }

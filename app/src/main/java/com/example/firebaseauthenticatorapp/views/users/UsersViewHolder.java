@@ -26,6 +26,6 @@ public class UsersViewHolder extends RecyclerView.ViewHolder {
 
     public void updateItemWithUser(Users user){
         userName.setText(user.getFullName());
-        userTel.setText(user.getPhone());
+      //  userTel.setText(user.getPhone());
     }
 }
