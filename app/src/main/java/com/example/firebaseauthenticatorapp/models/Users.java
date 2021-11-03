@@ -5,24 +5,24 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.List;
 
 @IgnoreExtraProperties
-public class User {
+public class Users {
     private String fullName;
     private String email;
     private String phone;
     private String userUid;
     private List<Discussion> myListDiscussion;
 
-    public User() {
+    public Users() {
     }
 
-    public User(String fullName, String email, String phone, String userUid) {
+    public Users(String fullName, String email, String phone, String userUid) {
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
         this.userUid = userUid;
     }
 
-    public User(String fullName, String email, String phone, String userUid, List<Discussion> myListDiscussion) {
+    public Users(String fullName, String email, String phone, String userUid, List<Discussion> myListDiscussion) {
         this(fullName, email, phone, userUid);
         this.myListDiscussion = myListDiscussion;
     }

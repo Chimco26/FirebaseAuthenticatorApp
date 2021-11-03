@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,8 +78,8 @@ public class DiscussionsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_discussion, container, false);
 
         realtimeDB = FirebaseDatabase.getInstance();
-        mRecyclerDiscussion = v.findViewById(R.id.recyclerView_discussions);
-        mSearchViewOneDiscussiuon = v.findViewById(R.id.searchView_one_discussion);
+        mRecyclerDiscussion = v.findViewById(R.id.recyclerView_list_users);
+        mSearchViewOneDiscussiuon = v.findViewById(R.id.searchView_one_user);
         mFloatingActionButtonDiscussion = v.findViewById(R.id.floatingActionButton_new_discussion);
         mTitleTextView = v.findViewById(R.id.textView_title_discussions);
         getAllDiscussions();

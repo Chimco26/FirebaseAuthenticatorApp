@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.firebaseauthenticatorapp.R;
-import com.example.firebaseauthenticatorapp.models.User;
+import com.example.firebaseauthenticatorapp.models.Users;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -58,7 +58,7 @@ public class Register extends AppCompatActivity {
     }
 
     private void saveToFirebaseDB() {
-        User user = new User(mEditFullName.getText().toString(),
+        Users user = new Users(mEditFullName.getText().toString(),
                 mEditEmail.getText().toString(),
                 mEditPhone.getText().toString(),
                 FirebaseAuth.getInstance().getCurrentUser().getUid());

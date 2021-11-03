@@ -8,25 +8,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firebaseauthenticatorapp.R;
-import com.example.firebaseauthenticatorapp.models.Message;
-import com.example.firebaseauthenticatorapp.models.User;
+import com.example.firebaseauthenticatorapp.models.Users;
 
-/**
- * Created by Chimco26 - RavTech on 01/11/2021.
- */
 public class UsersViewHolder extends RecyclerView.ViewHolder {
-    private TextView mUserName;
-    private ImageView mUserImage;
+
+    TextView userName;
+    TextView userTel;
+    ImageView userImage;
 
     public UsersViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        mUserImage = itemView.findViewById(R.id.user_image);
-        mUserName = itemView.findViewById(R.id.user_name);
+        userName = itemView.findViewById(R.id.user_name);
+        userTel = itemView.findViewById(R.id.user_tel);
+        userImage = itemView.findViewById(R.id.user_image);
     }
 
-    public void updateItemWithUser(User user){
-        mUserName.setText(user.getFullName());
-        mUserImage.setImageResource(R.drawable.ic_baseline_person_24);
+    public void updateItemWithUser(Users user){
+        userName.setText(user.getFullName());
+        userTel.setText(user.getPhone());
     }
 }

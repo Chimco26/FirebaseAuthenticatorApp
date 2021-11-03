@@ -7,7 +7,7 @@ import java.util.List;
 
 @IgnoreExtraProperties
 public class Discussion {
-    private List<User> subject;
+    private List<Users> subject;
     private List<Message> myDiscussion;
     private Date lastMessageDate;
     private String titleDiscussion;
@@ -15,12 +15,12 @@ public class Discussion {
     public Discussion() {
     }
 
-    public Discussion(List<User> subject, String titleDiscussion) {
+    public Discussion(List<Users> subject, String titleDiscussion) {
         this.subject = subject;
         this.titleDiscussion = titleDiscussion;
     }
 
-    public List<User> getSubject() {
+    public List<Users> getSubject() {
         return subject;
     }
 
@@ -36,7 +36,7 @@ public class Discussion {
         return titleDiscussion;
     }
 
-    public void setSubject(List<User> subject) {
+    public void setSubject(List<Users> subject) {
         this.subject = subject;
     }
 

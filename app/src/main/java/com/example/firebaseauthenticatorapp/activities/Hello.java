@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.firebaseauthenticatorapp.R;
-import com.example.firebaseauthenticatorapp.models.User;
+import com.example.firebaseauthenticatorapp.models.Users;
 import com.example.firebaseauthenticatorapp.views.users.UsersAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,7 +33,7 @@ public class Hello extends AppCompatActivity {
     private FirebaseFirestore db;
     private Button mLogoutButton;
     private FirebaseAuth mAuth;
-    private List<User> mListUsers;
+    private List<Users> mListUsers;
     private RecyclerView mListUsersRecycler;
 
 
@@ -75,8 +75,11 @@ public class Hello extends AppCompatActivity {
         db.collection("Users").get().addOnCompleteListener(task -> {
             if(task.isComplete()){
                 for(QueryDocumentSnapshot doc : task.getResult()){
-                    mListUsers.add(doc.toObject(User.class));
+                    mListUsers.add(doc.toObject(Users.class));
                 }
+            }
+            for(Users user : mListUsers){
+                Log.e("TAG", user.getFullName());
             }
         });
     }

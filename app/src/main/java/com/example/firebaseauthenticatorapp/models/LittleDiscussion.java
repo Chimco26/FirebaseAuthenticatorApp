@@ -1,5 +1,7 @@
 package com.example.firebaseauthenticatorapp.models;
 
+import com.google.firebase.firestore.auth.User;
+
 import java.util.List;
 
 /**
@@ -7,13 +9,13 @@ import java.util.List;
  */
 public class LittleDiscussion {
     private Message mLastMessage;
-    private List<User> mListUsers;
+    private List<Users> mListUsers;
 
     public void setmLastMessage(Message mLastMessage) {
         this.mLastMessage = mLastMessage;
     }
 
-    public void setmListUsers(List<User> mListUsers) {
+    public void setmListUsers(List<Users> mListUsers) {
         this.mListUsers = mListUsers;
     }
 
@@ -21,11 +23,11 @@ public class LittleDiscussion {
         return mLastMessage;
     }
 
-    public List<User> getmListUsers() {
+    public List<Users> getmListUsers() {
         return mListUsers;
     }
 
-    public LittleDiscussion(Message mLastMessage, List<User> mListUsers) {
+    public LittleDiscussion(Message mLastMessage, List<Users> mListUsers) {
         this.mLastMessage = mLastMessage;
         this.mListUsers = mListUsers;
     }
