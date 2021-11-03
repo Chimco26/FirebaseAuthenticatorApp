@@ -33,8 +33,11 @@ public class DiscussionViewHolder extends RecyclerView.ViewHolder {
     public void updateItemWithDiscussion(LittleDiscussion discussion){
         if(discussion.getmListUsers().get(0).getUserUid() == FirebaseAuth.getInstance().getCurrentUser().getUid()){
             mNameDiscussion.setText(discussion.getmListUsers().get(1).getFullName());
-            mTimeDiscussion.setText(discussion.getmLastMessage().getDateMessage().toString());
+        } else {
+            mNameDiscussion.setText(discussion.getmListUsers().get(0).getFullName());
+
         }
+            mTimeDiscussion.setText(discussion.getmLastMessage().getDateMessage().toString());
         mIconDiscussion.getImageMatrix();
         mTextDiscussion.setText(discussion.getmLastMessage().getTextMessage());
     }
