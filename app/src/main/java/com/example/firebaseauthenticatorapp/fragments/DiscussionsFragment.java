@@ -7,38 +7,53 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.example.firebaseauthenticatorapp.GoToFragDiscussionListener;
 import com.example.firebaseauthenticatorapp.R;
 import com.example.firebaseauthenticatorapp.models.Discussion;
 import com.example.firebaseauthenticatorapp.models.LittleDiscussion;
+import com.example.firebaseauthenticatorapp.models.Message;
+import com.example.firebaseauthenticatorapp.models.Users;
 import com.example.firebaseauthenticatorapp.views.discussion.DiscussionAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.common.collect.Lists;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.auth.User;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class DiscussionsFragment extends Fragment {
+public class DiscussionsFragment extends Fragment implements GoToFragDiscussionListener {
 
-    private FirebaseDatabase realtimeDB;
+    private DatabaseReference myChatRef;
+    private CollectionReference myUsersRef;
+    private Map<String, String> mMapListUserDiscussionUid = new ArrayMap<>();
     private RecyclerView mRecyclerDiscussion;
     private SearchView mSearchViewOneDiscussiuon;
-    private FloatingActionButton mFloatingActionButtonDiscussion;
+    private ImageView mNewDiscussionButton;
     private TextView mTitleTextView;
-    private List<LittleDiscussion> discussionList;
+    private List<Discussion> discussionList;
     private DiscussionAdapter adapter;
+    private ProgressBar progressBar;
+    private  final String TAG = DiscussionsFragment.class.getName();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -69,6 +84,8 @@ public class DiscussionsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        myUsersRef = FirebaseFirestore.getInstance().collection("Users");
+        myChatRef = FirebaseDatabase.getInstance().getReference("allChat");
     }
 
     @Override
@@ -77,47 +94,81 @@ public class DiscussionsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_discussion, container, false);
 
-        realtimeDB = FirebaseDatabase.getInstance();
         mRecyclerDiscussion = v.findViewById(R.id.recyclerView_list_users);
         mSearchViewOneDiscussiuon = v.findViewById(R.id.searchView_one_user);
-        mFloatingActionButtonDiscussion = v.findViewById(R.id.floatingActionButton_new_discussion);
+        mNewDiscussionButton = v.findViewById(R.id.new_discussion_button);
         mTitleTextView = v.findViewById(R.id.textView_title_discussions);
+        progressBar = v.findViewById(R.id.progressBar_all_disc);
+        discussionList = new ArrayList<>();
+        mNewDiscussionButton.setOnClickListener(v1 -> getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainerView, new NewDiscussionFragment())
+                .addToBackStack(null)
+                .commit());
+    //    createOneMessageTest();
         getAllDiscussions();
         return v;
     }
 
-    private  void configureRecyclerView(List<LittleDiscussion> list) {
-        discussionList = list;
-        adapter = new DiscussionAdapter(discussionList);
-        mRecyclerDiscussion.setAdapter(adapter);
-        mRecyclerDiscussion.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter.notifyDataSetChanged();
+    private void configureRecyclerView() {
+        progressBar.setVisibility(View.GONE);
+        if(discussionList.size() > 0){
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+            layoutManager.setReverseLayout(true);
+            layoutManager.setStackFromEnd(true);
+            adapter = new DiscussionAdapter(discussionList, this);
+            mRecyclerDiscussion.setAdapter(adapter);
+            mRecyclerDiscussion.setLayoutManager(layoutManager);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void getAllDiscussions(){
-        DatabaseReference myRef = realtimeDB
-                .getReference("littleChat");
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dsp : snapshot.getChildren()){
-                    LittleDiscussion discussion = dsp.getValue(LittleDiscussion.class);
-                    if(discussion.getmListUsers().get(0).getUserUid()
-                            == FirebaseAuth.getInstance().getCurrentUser().getUid()
-                            || discussion.getmListUsers().get(1).getUserUid()
-                            == FirebaseAuth.getInstance().getCurrentUser().getUid()){
-                        discussionList.add(discussion);
+        progressBar.setVisibility(View.VISIBLE);
+        myUsersRef.document(FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                DocumentSnapshot document = task.getResult();
+                if (document != null){
+                    mMapListUserDiscussionUid = (Map<String, String>) document.get("list_user");
+                    for (String disc : mMapListUserDiscussionUid.values()){
+                        myChatRef.child(disc).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                discussionList.add(snapshot.getValue(Discussion.class));
+                                configureRecyclerView();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                     }
                 }
-                configureRecyclerView(discussionList);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
     }
 
+    public void createOneMessageTest() {
+        String textMessage = "hello my best friend!";
+        String senderID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Message message = new Message(senderID, textMessage);
+        LittleDiscussion discussion = new LittleDiscussion(message, Lists.newArrayList(
+                new Users("Simon", "simon@gmail.com", "052", FirebaseAuth.getInstance().getCurrentUser().getUid()),
+                new Users("simono", "simono@gmail.com", "058", "qwerty"
+        )));
+        myChatRef.child("uid").push().setValue(discussion);
+    }
+
+    @Override
+    public void goToFragment(Discussion littleDiscussion) {
+        OneDiscussionFragment oneDiscussionFragment = new OneDiscussionFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("myLittleDiscussion", littleDiscussion);
+        oneDiscussionFragment.setArguments(bundle);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainerView, oneDiscussionFragment)
+                .addToBackStack(DiscussionsFragment.class.getName())
+                .commit();
+    }
 }

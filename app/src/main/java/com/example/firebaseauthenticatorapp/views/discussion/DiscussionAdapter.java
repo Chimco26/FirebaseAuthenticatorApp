@@ -8,18 +8,20 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.firebaseauthenticatorapp.GoToFragDiscussionListener;
 import com.example.firebaseauthenticatorapp.R;
 import com.example.firebaseauthenticatorapp.models.Discussion;
-import com.example.firebaseauthenticatorapp.models.LittleDiscussion;
 
 import java.util.List;
 
 public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionViewHolder> {
 
-    private List<LittleDiscussion> discussionList;
+    private List<Discussion> discussionList;
+    private GoToFragDiscussionListener mGoToFragDiscussionListener;
 
-    public DiscussionAdapter(List<LittleDiscussion> discussionList) {
+    public DiscussionAdapter(List<Discussion> discussionList, GoToFragDiscussionListener goToFragDiscussionListener) {
         this.discussionList = discussionList;
+        mGoToFragDiscussionListener = goToFragDiscussionListener;
     }
 
     @NonNull
@@ -29,7 +31,7 @@ public class DiscussionAdapter extends RecyclerView.Adapter<DiscussionViewHolder
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.item_discussion, parent, false);
 
-        return new DiscussionViewHolder(view);
+        return new DiscussionViewHolder(view, mGoToFragDiscussionListener);
     }
 
     @Override

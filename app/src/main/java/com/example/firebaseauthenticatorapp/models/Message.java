@@ -2,6 +2,7 @@ package com.example.firebaseauthenticatorapp.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.Calendar;
 import java.util.Date;
 
 @IgnoreExtraProperties
@@ -18,9 +19,9 @@ public class Message {
     public Message() {
     }
 
-    public Message(String senderID, Date dateMessage, String textMessage) {
+    public Message(String senderID, String textMessage) {
         this.senderID = senderID;
-        this.dateMessage = dateMessage;
+        this.dateMessage = Calendar.getInstance().getTime();
         this.textMessage = textMessage;
     }
 

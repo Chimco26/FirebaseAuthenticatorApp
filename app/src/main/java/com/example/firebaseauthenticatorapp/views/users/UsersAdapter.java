@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.firebaseauthenticatorapp.GoToFragUserListener;
 import com.example.firebaseauthenticatorapp.R;
 import com.example.firebaseauthenticatorapp.models.Users;
 
@@ -17,10 +18,12 @@ import java.util.List;
 public class UsersAdapter extends RecyclerView.Adapter<UsersViewHolder> {
 
     List<Users> mUserList;
+    GoToFragUserListener goToFragUserListener;
 
 
-    public UsersAdapter(List<Users> userList) {
+    public UsersAdapter(List<Users> userList, GoToFragUserListener fragUserListener) {
         mUserList = userList;
+        goToFragUserListener = fragUserListener;
     }
 
     @NonNull
@@ -30,7 +33,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.item_user, parent, false);
 
-        return new UsersViewHolder(view);
+        return new UsersViewHolder(view, goToFragUserListener);
     }
 
     @Override

@@ -2,15 +2,15 @@ package com.example.firebaseauthenticatorapp.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
 import java.util.List;
 
 @IgnoreExtraProperties
-public class Users {
+public class Users implements Serializable {
     private String fullName;
     private String email;
     private String phone;
     private String userUid;
-    private List<Discussion> myListDiscussion;
 
     public Users() {
     }
@@ -20,11 +20,6 @@ public class Users {
         this.email = email;
         this.phone = phone;
         this.userUid = userUid;
-    }
-
-    public Users(String fullName, String email, String phone, String userUid, List<Discussion> myListDiscussion) {
-        this(fullName, email, phone, userUid);
-        this.myListDiscussion = myListDiscussion;
     }
 
     public String getFullName() {
@@ -43,10 +38,6 @@ public class Users {
         return userUid;
     }
 
-    public List<Discussion> getMyListDiscussion() {
-        return myListDiscussion;
-    }
-
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
@@ -61,9 +52,5 @@ public class Users {
 
     public void setUserUid(String userUid) {
         this.userUid = userUid;
-    }
-
-    public void setMyListDiscussion(List<Discussion> myListDiscussion) {
-        this.myListDiscussion = myListDiscussion;
     }
 }

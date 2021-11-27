@@ -16,6 +16,7 @@ import com.example.firebaseauthenticatorapp.models.Users;
 import com.example.firebaseauthenticatorapp.views.users.UsersAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -29,13 +30,9 @@ import java.util.List;
 
 public class Hello extends AppCompatActivity {
 
-    private TextView helloTextView;
     private String mUserUid;
-    private FirebaseFirestore db;
-    private Button mLogoutButton;
+    private FloatingActionButton mLogoutButton;
     private FirebaseAuth mAuth;
-    private List<Users> mListUsers;
-    private RecyclerView mListUsersRecycler;
 
 
     @Override
@@ -43,51 +40,20 @@ public class Hello extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hello);
 
+        mLogoutButton = findViewById(R.id.logout_button);
         mAuth = FirebaseAuth.getInstance();
 
-        mLogoutButton = findViewById(R.id.logout_button);
-        helloTextView = findViewById(R.id.hello_uid);
-        mListUsersRecycler = findViewById(R.id.recyclerView_users);
 
-        db = FirebaseFirestore.getInstance();
         Bundle bundle = getIntent().getExtras();
         mUserUid = bundle.getString("userUid");
         Log.e("TAG", ""+ mUserUid);
 
-        initListUsers();
-
-        DocumentReference docRef = db.collection("Users").document(mUserUid);
-
-        docRef.get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                DocumentSnapshot document = task.getResult();
-                helloTextView.setText("Hello " + document.getString("fullName") + "!!!");
-            }
-        });
 
         mLogoutButton.setOnClickListener(v -> {
             mAuth.signOut();
-            startActivity(new Intent(Hello.this, Login.class));
+            startActivity(new Intent(Hello.this, MainActivity.class));
         });
     }
 
-    public void initListUsers(){
-        mListUsers = new ArrayList<>();
-        db.collection("Users").get().addOnCompleteListener(task -> {
-            if(task.isComplete()){
-                for(QueryDocumentSnapshot doc : task.getResult()){
-                    mListUsers.add(doc.toObject(Users.class));
-                }
-                initRecyclerView();
-            }
-            for(Users user : mListUsers){
-                Log.e("TAG", user.getFullName());
-            }
-        });
-    }
 
-    public void initRecyclerView(){
-        mListUsersRecycler.setAdapter(new UsersAdapter(mListUsers));
-        mListUsersRecycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-    }
 }

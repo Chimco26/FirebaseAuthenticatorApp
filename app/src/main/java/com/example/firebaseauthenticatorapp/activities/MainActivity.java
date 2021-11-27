@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.firebaseauthenticatorapp.R;
+import com.example.firebaseauthenticatorapp.fragments.DiscussionsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         realtimeDB = FirebaseDatabase.getInstance();
-        saveToRealtimeDB();
+      //  saveToRealtimeDB();
 
         if(user != null){
             mUserUid = user.getUid();
